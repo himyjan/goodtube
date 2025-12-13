@@ -92,12 +92,7 @@ With that in mind, I will give free unlimited access -
 
 Please send an email to goodtube4u@gmail.com to request free access.
 
-
-<br>
-
 I hope you all enjoy the new extension!!! ❤️
-
-Cheers.
 
 <br>
 
