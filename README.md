@@ -45,7 +45,7 @@ https://addons.mozilla.org/en-US/firefox/addon/goodtube-adblock-for-youtube/
 
 ## ⭐ How is this adblocker different?
 
-Normal adblockers use "filter lists" to identify and remove ads. Unfortunately this is not very reliable. Youtube keeps changing how their ads "look" and the filters must be constantly updated. They are also very easily to detect. You've probably had some issues with them being being detected or not working over the last year or two.
+Normal adblockers use "filter lists" to identify and remove ads. Unfortunately this is not very reliable. Youtube keeps changing how their ads "look" and the filters must be constantly updated. They are also very easy to detect. You've probably had some issues with them being detected or not working over the last year or two.
 
 GoodTube takes a different approach. It uses a unique method to block ads via the "front end", which cannot be detected or stopped by Youtube.
 
@@ -62,7 +62,7 @@ It's now been around one year since GoodTube was first released. What started ou
 
 I would like to say a huge THANK YOU to everyone who has been a part of this project so far. Your support really means a lot to me and I hope everyone is enjoying using GoodTube.
 
-Over the last few months, I've been working hard on turning this into an official browser extension. This has not been an easy task...I've spent a lot of late nights spent coding, trying different things until, finally, everything came together.
+Over the last few months, I've been working hard on turning this into an official browser extension. This has not been an easy task...I've spent a lot of late nights coding, trying different things until, finally, everything came together.
 
 ⭐⭐ *I'm very happy to announce that the official GoodTube Browser Extension has now been released!!*  ⭐⭐
 
@@ -84,11 +84,11 @@ The extension gives you a 7 day free trial. After that it costs $2, once only, f
 
 Please note that the existing free version is NOT being removed. You are welcome to continue to use it for as long as you like. Just remember that it is no longer supported or being updated.
 
-The descision to make this a paid extension has not come easily and I've tried to make it as cheap as possible. The priority remains keeping this adblocker available to <i>everyone</i>.
+The decision to make this a paid extension has not come easily and I've tried to make it as cheap as possible. The priority remains keeping this adblocker available to <i>everyone</i>.
 
 With that in mind, I will give free unlimited access -
 - If you cannot afford this due to your financial or political situation.
-- If you're one of the amazing people who donated to this project previously (THANK YOU so much for your support, every donation I recieved has meant the world to me over the last year!!)
+- If you're one of the amazing people who donated to this project previously (THANK YOU so much for your support, every donation I received has meant the world to me over the last year!!)
 
 Please send an email to goodtube4u@gmail.com to request free access.
 
