@@ -54,6 +54,8 @@ GoodTube takes a different approach. It uses a unique method to block ads via th
 ## 💎 How much does it cost?
 This extension gives you a 7 day free trial. After that it costs $2, once only, for unlimited life time access on as many devices as you like.
 
+*If you cannot afford this due to your financial or political situation, please send an email to goodtube4u@gmail.com to request FREE access.*
+
 <br>
 
 ## 🎉 UPDATE (13th Dec, 2025) - GoodTube becomes an official browser extension!!
