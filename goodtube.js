@@ -1188,7 +1188,7 @@
 			}
 
 			// Set the video source
-			goodTube_player.contentWindow.postMessage('goodTube_src_https://www.youtube.com/embed/' + goodTube_getParams['v'] + '?goodTubeEmbed=1&autoplay=1&goodTube_autoplay=' + goodTube_autoplay + '&goodTube_playbackSpeed=' + goodTube_playbackSpeed + '&goodTube_hideInfoCards=' + goodTube_hideInfoCards + '&goodTube_hideEndScreen=' + goodTube_hideEndScreen + '&goodTube_instantPause=' + goodTube_instantPause + startTimeParam, '*');
+			goodTube_player.contentWindow.postMessage('old_goodTube_src_https://www.youtube.com/embed/' + goodTube_getParams['v'] + '?goodTubeEmbed=1&autoplay=1&goodTube_autoplay=' + goodTube_autoplay + '&goodTube_playbackSpeed=' + goodTube_playbackSpeed + '&goodTube_hideInfoCards=' + goodTube_hideInfoCards + '&goodTube_hideEndScreen=' + goodTube_hideEndScreen + '&goodTube_instantPause=' + goodTube_instantPause + startTimeParam, '*');
 
 			// Indicate we've completed the first load
 			goodTube_firstLoad = false;
@@ -1196,7 +1196,7 @@
 		// Otherwise, for all other loads
 		else {
 			// Load the video via the iframe api
-			goodTube_player.contentWindow.postMessage('goodTube_load_' + goodTube_getParams['v'] + '|||' + startTime, '*');
+			goodTube_player.contentWindow.postMessage('old_goodTube_load_' + goodTube_getParams['v'] + '|||' + startTime, '*');
 		}
 
 		// Sync the starting time
@@ -1289,7 +1289,7 @@
 			// Clear the regular player
 			else {
 				// Stop the video via the iframe api
-				goodTube_player.contentWindow.postMessage('goodTube_stopVideo', '*');
+				goodTube_player.contentWindow.postMessage('old_goodTube_stopVideo', '*');
 			}
 		}
 
@@ -1304,7 +1304,7 @@
 			return;
 		}
 
-		goodTube_player.contentWindow.postMessage('goodTube_skipTo_' + time + '|||' + videoId, '*');
+		goodTube_player.contentWindow.postMessage('old_goodTube_skipTo_' + time + '|||' + videoId, '*');
 	}
 
 	// Pause
@@ -1314,7 +1314,7 @@
 			return;
 		}
 
-		goodTube_player.contentWindow.postMessage('goodTube_pause', '*');
+		goodTube_player.contentWindow.postMessage('old_goodTube_pause', '*');
 	}
 
 	// Play
@@ -1339,7 +1339,7 @@
 
 		// If the "hide and mute ads" fallback is disabled
 		if (!goodTube_fallback) {
-			goodTube_player.contentWindow.postMessage('goodTube_play|||' + goodTube_getParams['v'], '*');
+			goodTube_player.contentWindow.postMessage('old_goodTube_play|||' + goodTube_getParams['v'], '*');
 		}
 		// Otherwise, the "hide and mute ads" fallback is enabled
 		else {
@@ -1393,12 +1393,12 @@
 		// If we're viewing a playlist
 		if (goodTube_playlist.length > 0) {
 			// Enable the previous button
-			goodTube_player.contentWindow.postMessage('goodTube_prevButton_true', '*');
+			goodTube_player.contentWindow.postMessage('old_goodTube_prevButton_true', '*');
 		}
 		// Otherwise, we're not viewing a playlist
 		else {
 			// Disable the previous button
-			goodTube_player.contentWindow.postMessage('goodTube_prevButton_false', '*');
+			goodTube_player.contentWindow.postMessage('old_goodTube_prevButton_false', '*');
 		}
 	}
 
@@ -1817,7 +1817,7 @@
 				}
 
 				// Pass the keyboard shortcut to the iframe
-				goodTube_player.contentWindow.postMessage('goodTube_shortcut_' + event.type + '_' + event_key + '_' + event_keyCode + '_' + event.ctrlKey + '_' + event.metaKey + '_' + event.shiftKey + '_' + event.altKey, '*');
+				goodTube_player.contentWindow.postMessage('old_goodTube_shortcut_' + event.type + '_' + event_key + '_' + event_keyCode + '_' + event.ctrlKey + '_' + event.metaKey + '_' + event.shiftKey + '_' + event.altKey, '*');
 			}
 		}
 	}
@@ -1849,7 +1849,7 @@
 		// If we're viewing a playlist, and on the first item, go to the start of the track
 		if (goodTube_playlist.length > 0 && goodTube_playlistIndex === 0) {
 			// Go the the start of the video
-			goodTube_player.contentWindow.postMessage('goodTube_skipTo_0|||' + goodTube_getParams['v'], '*');
+			goodTube_player.contentWindow.postMessage('old_goodTube_skipTo_0|||' + goodTube_getParams['v'], '*');
 
 			// Debug message
 			console.log('[GoodTube] Restarting video...');
@@ -1915,11 +1915,11 @@
 
 		// Hide the end screen
 		if (hideEndScreen) {
-			goodTube_player.contentWindow.postMessage('goodTube_endScreen_hide', '*');
+			goodTube_player.contentWindow.postMessage('old_goodTube_endScreen_hide', '*');
 		}
 		// Otherwise show the end screen
 		else {
-			goodTube_player.contentWindow.postMessage('goodTube_endScreen_show', '*');
+			goodTube_player.contentWindow.postMessage('old_goodTube_endScreen_show', '*');
 		}
 	}
 
@@ -2113,12 +2113,12 @@
 		}
 
 		// Proxy iframe has loaded
-		else if (event.data === 'goodTube_proxyIframe_loaded') {
+		else if (event.data === 'old_goodTube_proxyIframe_loaded') {
 			goodTube_proxyIframeLoaded = true;
 		}
 
 		// Player iframe has loaded
-		else if (event.data === 'goodTube_playerIframe_loaded') {
+		else if (event.data === 'old_goodTube_playerIframe_loaded') {
 			goodTube_playerIframeLoaded = true;
 
 			// Show the player iframe
@@ -2126,8 +2126,8 @@
 		}
 
 		// Picture in picture
-		if (event.data.indexOf('goodTube_pip_') !== -1) {
-			let pipEnabled = event.data.replace('goodTube_pip_', '');
+		if (event.data.indexOf('old_goodTube_pip_') !== -1) {
+			let pipEnabled = event.data.replace('old_goodTube_pip_', '');
 
 			if (pipEnabled === 'true') {
 				goodTube_pip = true;
@@ -2144,28 +2144,28 @@
 		}
 
 		// Save the playback speed as a cookie
-		else if (event.data.indexOf('goodTube_playbackSpeed_') !== -1) {
-			goodTube_helper_setCookie('goodTube_playbackSpeed', event.data.replace('goodTube_playbackSpeed_', ''));
-			goodTube_playbackSpeed = event.data.replace('goodTube_playbackSpeed_', '');
+		else if (event.data.indexOf('old_goodTube_playbackSpeed_') !== -1) {
+			goodTube_helper_setCookie('old_goodTube_playbackSpeed', event.data.replace('old_goodTube_playbackSpeed_', ''));
+			goodTube_playbackSpeed = event.data.replace('old_goodTube_playbackSpeed_', '');
 		}
 
 		// Previous video
-		else if (event.data === 'goodTube_prevVideo') {
+		else if (event.data === 'old_goodTube_prevVideo') {
 			goodTube_nav_prev();
 		}
 
 		// Next video
-		else if (event.data === 'goodTube_nextVideo') {
+		else if (event.data === 'old_goodTube_nextVideo') {
 			goodTube_nav_next();
 		}
 
 		// Video has ended
-		else if (event.data === 'goodTube_videoEnded') {
+		else if (event.data === 'old_goodTube_videoEnded') {
 			goodTube_nav_videoEnded();
 		}
 
 		// Theater mode (toggle) - this should only work when not in fullscreen
-		else if (event.data === 'goodTube_theater' && !document.fullscreenElement) {
+		else if (event.data === 'old_goodTube_theater' && !document.fullscreenElement) {
 			// Find the theater button
 			let theaterButton = document.querySelector('.ytp-size-button');
 
@@ -2177,19 +2177,19 @@
 		}
 
 		// Autoplay
-		else if (event.data === 'goodTube_autoplay_false') {
+		else if (event.data === 'old_goodTube_autoplay_false') {
 			goodTube_helper_setCookie('goodTube_autoplay', 'false');
 			goodTube_autoplay = 'false';
 		}
-		else if (event.data === 'goodTube_autoplay_true') {
+		else if (event.data === 'old_goodTube_autoplay_true') {
 			goodTube_helper_setCookie('goodTube_autoplay', 'true');
 			goodTube_autoplay = 'true';
 		}
 
 		// Sync main player (only if we're viewing a video page AND the "hide and mute ads" fallback is inactive)
-		else if (event.data.indexOf('goodTube_syncMainPlayer_') !== -1 && goodTube_helper_watchingVideo() && !goodTube_fallback) {
+		else if (event.data.indexOf('old_goodTube_syncMainPlayer_') !== -1 && goodTube_helper_watchingVideo() && !goodTube_fallback) {
 			// Parse the data
-			let bits = event.data.replace('goodTube_syncMainPlayer_', '').split('|||');
+			let bits = event.data.replace('old_goodTube_syncMainPlayer_', '').split('|||');
 			let syncTime = bits[0];
 			let videoId = bits[1];
 
@@ -2252,7 +2252,7 @@
 		}
 
 		// Enable "hide and mute ads" fallback
-		else if (event.data === 'goodTube_fallback_enable') {
+		else if (event.data === 'old_goodTube_fallback_enable') {
 			goodTube_fallback = true;
 
 			// Add a class to the <body>
@@ -2287,7 +2287,7 @@
 		}
 
 		// Disable "hide and mute ads" fallback
-		else if (event.data === 'goodTube_fallback_disable') {
+		else if (event.data === 'old_goodTube_fallback_disable') {
 			goodTube_fallback = false;
 
 			// Remove the class from the <body>
@@ -2302,13 +2302,13 @@
 
 				// Fullscreen the normal Youtube player (wait 100ms, this delay is required because browsers animate fullscreen animations and we can't change this)
 				window.setTimeout(() => {
-					goodTube_player.contentWindow.postMessage('goodTube_fullscreen', '*');
+					goodTube_player.contentWindow.postMessage('old_goodTube_fullscreen', '*');
 				}, 100);
 			}
 		}
 
 		// Sync the aspect ratio
-		else if (event.data.indexOf('goodTube_syncAspectRatio_') !== -1) {
+		else if (event.data.indexOf('old_goodTube_syncAspectRatio_') !== -1) {
 			// If you're viewing a short
 			if (window.location.href.indexOf('/shorts') !== -1) {
 				// Remove the aspect ratio changes
@@ -2317,13 +2317,13 @@
 			// Otherwise, for all other videos
 			else {
 				// Set the aspect ratio
-				let aspectRatio = event.data.replace('goodTube_syncAspectRatio_', '').split('_');
+				let aspectRatio = event.data.replace('old_goodTube_syncAspectRatio_', '').split('_');
 				goodTube_youtube_setAspectRatio(aspectRatio[0], aspectRatio[1]);
 			}
 		}
 
 		// Cancel any pending play actions
-		else if (event.data === 'goodTube_cancelPlay') {
+		else if (event.data === 'old_goodTube_cancelPlay') {
 			// Clear the re-try timeout for the "goodTube_player_play" function
 			clearTimeout(goodTube_player_play_timeout);
 		}
@@ -2409,7 +2409,7 @@
 		// If we're not watching a video
 		else {
 			// Stop the video (this solves some weird edge case where the video can be playing in the background)
-			goodTube_player.contentWindow.postMessage('goodTube_stopVideo', '*');
+			goodTube_player.contentWindow.postMessage('old_goodTube_stopVideo', '*');
 		}
 
 		// Hide shorts (real time)
@@ -3895,7 +3895,7 @@
 
 			// Populate the overlay
 			goodTube_helper_innerHTML(overlayElement, `
-				<div class='goodTube_overlay_inner'>
+				<div class='goodTube_overlay_inner' data-version='old'>
 					<img src='data:image/gif;base64,R0lGODlhQAAyANU4AM1ml//MzcxlaP/LzM1maMxlZ//MzM1laMtkZspjlstkZ//Exe94ie10h8swZMwuYv+oqv+Vl/iQmdRtb8xldcphY81nl81paMpiZP/DxdZ5e80vY81pmtZ4es0wY/CImdZvcswuYf/Oz81mmfS1ts0xZM1mj8swY8xml++XqPGKjf/Q0ctklslilu51iMwxZcxmls1mlswxZP+Ym/+Zm8xlls0yZf+Ymv///wAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDkuMS1jMDAzIDc5Ljk2OTBhODdmYywgMjAyNS8wMy8wNi0yMDo1MDoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI2LjkgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkIwRkZBNzNFQkI3RjExRjA4OTVBRDJBREJCNDlGMkY5IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkIwRkZBNzNGQkI3RjExRjA4OTVBRDJBREJCNDlGMkY5Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QjBGRkE3M0NCQjdGMTFGMDg5NUFEMkFEQkI0OUYyRjkiIHN0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%3D%3D'>
 					<div class='goodTube_overlay_textContainer'>
 						<div class='goodTube_overlay_textContainer_title'>Sorry, we can't remove the ads from this video but we can hide and mute them!</div>
@@ -4019,7 +4019,7 @@
 				goodTube_helper_setCookie('goodTube_autoplay', oppositeValue);
 
 				// Update the embedded player
-				goodTube_player.contentWindow.postMessage('goodTube_autoplay_' + oppositeValue, '*');
+				goodTube_player.contentWindow.postMessage('old_goodTube_autoplay_' + oppositeValue, '*');
 			});
 		}
 		// Otherwise, keep trying until we find the autoplay button
@@ -4218,7 +4218,7 @@
 		setInterval(goodTube_iframe_actions, 100);
 
 		// Let the parent frame know it's loaded
-		window.top.postMessage('goodTube_playerIframe_loaded', '*');
+		window.top.postMessage('old_goodTube_playerIframe_loaded', '*');
 	}
 
 	// Actions
@@ -4263,7 +4263,7 @@
 			if (!goodTube_fallback) {
 				// Enable the "hide and mute ads" fallback
 				goodTube_fallback = true;
-				window.top.postMessage('goodTube_fallback_enable', '*');
+				window.top.postMessage('old_goodTube_fallback_enable', '*');
 
 				// Support double speed shortcuts
 				goodTube_iframe_supportDoubleSpeed_init();
@@ -4278,7 +4278,7 @@
 			if (goodTube_fallback) {
 				// Disable the "hide and mute ads" fallback
 				goodTube_fallback = false;
-				window.top.postMessage('goodTube_fallback_disable', '*');
+				window.top.postMessage('old_goodTube_fallback_disable', '*');
 
 				// Support double speed shortcuts
 				goodTube_iframe_supportDoubleSpeed_init();
@@ -4313,7 +4313,7 @@
 
 			if (goodTube_iframe_api && typeof goodTube_iframe_api.getPlaybackRate === 'function') {
 				// Tell the top frame to save the playback speed
-				window.top.postMessage('goodTube_playbackSpeed_' + goodTube_iframe_api.getPlaybackRate(), '*');
+				window.top.postMessage('old_goodTube_playbackSpeed_' + goodTube_iframe_api.getPlaybackRate(), '*');
 			}
 		}, 100);
 	}
@@ -4633,7 +4633,7 @@
 				}
 
 				// Tell the top frame to go to the previous video
-				window.top.postMessage('goodTube_prevVideo', '*');
+				window.top.postMessage('old_goodTube_prevVideo', '*');
 			});
 		}
 
@@ -4649,7 +4649,7 @@
 				}
 
 				// Tell the top frame to go to the next video
-				window.top.postMessage('goodTube_nextVideo', '*');
+				window.top.postMessage('old_goodTube_nextVideo', '*');
 			});
 		}
 
@@ -4664,7 +4664,7 @@
 			theaterButton.setAttribute('title', 'Theater mode (t)');
 			theaterButton.setAttribute('data-tooltip-title', 'Theater mode (t)');
 			goodTube_helper_innerHTML(theaterButton, `
-				<svg height="100%" version="1.1" viewBox="0 0 36 36" width="100%"><use class="ytp-svg-shadow" xlink:href="#ytp-id-30"></use><path d="m 28,11 0,14 -20,0 0,-14 z m -18,2 16,0 0,10 -16,0 0,-10 z" fill="#fff" fill-rule="evenodd" id="ytp-id-30"></path></svg>
+				<svg data-version="old" height="100%" version="1.1" viewBox="0 0 36 36" width="100%"><use class="ytp-svg-shadow" xlink:href="#ytp-id-30"></use><path d="m 28,11 0,14 -20,0 0,-14 z m -18,2 16,0 0,10 -16,0 0,-10 z" fill="#fff" fill-rule="evenodd" id="ytp-id-30"></path></svg>
 			`)
 
 			// Add actions
@@ -4675,7 +4675,7 @@
 				}
 
 				// Tell the top window to toggle theater mode
-				window.top.postMessage('goodTube_theater', '*');
+				window.top.postMessage('old_goodTube_theater', '*');
 			});
 		}
 
@@ -4687,7 +4687,7 @@
 			goodTube_helper_insertAdjacentHTML(
 				subtitlesButton,
 				'beforebegin',
-				'<button class="ytp-button ytp-autonav-toggle" id="goodTube_autoplayButton"><div class="ytp-autonav-toggle-button-container"><div class="ytp-autonav-toggle-button" aria-checked="' + goodTube_getParams['goodTube_autoplay'] + '"></div></div></button>'
+				'<button class="ytp-button ytp-autonav-toggle" id="goodTube_autoplayButton" data-version="old"><div class="ytp-autonav-toggle-button-container"><div class="ytp-autonav-toggle-button" aria-checked="' + goodTube_getParams['goodTube_autoplay'] + '"></div></div></button>'
 			);
 
 			// Add actions
@@ -4705,11 +4705,11 @@
 
 					if (innerButtonState === 'true') {
 						innerButton.setAttribute('aria-checked', 'false');
-						window.top.postMessage('goodTube_autoplay_false', '*');
+						window.top.postMessage('old_goodTube_autoplay_false', '*');
 					}
 					else {
 						innerButton.setAttribute('aria-checked', 'true');
-						window.top.postMessage('goodTube_autoplay_true', '*');
+						window.top.postMessage('old_goodTube_autoplay_true', '*');
 					}
 				});
 			}
@@ -4750,7 +4750,7 @@
 			goodTube_iframe_syncMainPlayer(true);
 
 			// Tell the top frame the video ended
-			window.top.postMessage('goodTube_videoEnded', '*');
+			window.top.postMessage('old_goodTube_videoEnded', '*');
 		}
 	}
 
@@ -4780,7 +4780,7 @@
 			// Theater mode (t)
 			if (keyPressed === 't') {
 				// Tell the top window to toggle theater mode
-				window.top.postMessage('goodTube_theater', '*');
+				window.top.postMessage('old_goodTube_theater', '*');
 			}
 
 			// Picture in picture (i)
@@ -4794,13 +4794,13 @@
 			// Prev video ("shift+p" or "media track previous")
 			else if ((keyPressed === 'p' && event.shiftKey) || keyPressed === 'mediatrackprevious') {
 				// Tell the top window to go to the previous video
-				window.top.postMessage('goodTube_prevVideo', '*');
+				window.top.postMessage('old_goodTube_prevVideo', '*');
 			}
 
 			// Next video ("shift+n" or "media track next")
 			else if ((keyPressed === 'n' && event.shiftKey) || keyPressed === 'mediatracknext') {
 				// Tell the top window to go to the next video
-				window.top.postMessage('goodTube_nextVideo', '*');
+				window.top.postMessage('old_goodTube_nextVideo', '*');
 			}
 		});
 	}
@@ -4958,7 +4958,7 @@
 				goodTube_iframe_supportDoubleSpeed_allowNextClick = false;
 
 				// Tell the top level window to cancel any pending play actions
-				window.top.postMessage('goodTube_cancelPlay', '*');
+				window.top.postMessage('old_goodTube_cancelPlay', '*');
 			}
 			// Otherwise, double playback rate did happen
 			else {
@@ -5105,7 +5105,7 @@
 			setTimeout(() => { goodTube_iframe_supportDoubleSpeed_videoElement.focus(); }, 0);
 
 			// Tell the top level window to cancel any pending play actions
-			window.top.postMessage('goodTube_cancelPlay', '*');
+			window.top.postMessage('old_goodTube_cancelPlay', '*');
 		}
 		// Otherwise, double playback rate did happen
 		else {
@@ -5273,7 +5273,7 @@
 
 			// Populate the element
 			goodTube_helper_innerHTML(goodTube_iframe_supportDoubleSpeed_doubleSpeedElement, `
-				<div class="ytp-overlay ytp-speedmaster-overlay" data-layer="4">
+				<div class="ytp-overlay ytp-speedmaster-overlay" data-layer="4" data-version="old">
 					<div class="ytp-speedmaster-user-edu ytp-speedmaster-has-icon">
 						<div class="ytp-speedmaster-label">2x</div>
 						<div class="ytp-speedmaster-icon">
@@ -5423,8 +5423,8 @@
 
 
 		// Load video
-		if (event.data.indexOf('goodTube_load_') !== -1) {
-			let bits = event.data.replace('goodTube_load_', '').split('|||');
+		if (event.data.indexOf('old_goodTube_load_') !== -1) {
+			let bits = event.data.replace('old_goodTube_load_', '').split('|||');
 			let videoId = bits[0];
 			let startSeconds = parseFloat(bits[1]);
 
@@ -5433,16 +5433,16 @@
 		}
 
 		// Stop video
-		else if (event.data === 'goodTube_stopVideo') {
+		else if (event.data === 'old_goodTube_stopVideo') {
 			// Pause and mute the video
 			goodTube_iframe_pause();
 			goodTube_iframe_mute();
 		}
 
 		// Skip to time
-		else if (event.data.indexOf('goodTube_skipTo_') !== -1) {
+		else if (event.data.indexOf('old_goodTube_skipTo_') !== -1) {
 			// Get the data
-			let data = event.data.replace('goodTube_skipTo_', '').split('|||');
+			let data = event.data.replace('old_goodTube_skipTo_', '').split('|||');
 			let time = parseFloat(data[0]);
 			let targetVideoId = data[1];
 
@@ -5463,38 +5463,38 @@
 		}
 
 		// Pause
-		else if (event.data === 'goodTube_pause') {
+		else if (event.data === 'old_goodTube_pause') {
 			goodTube_iframe_pause();
 		}
 
 		// Play
-		else if (event.data.indexOf('goodTube_play|||') !== -1) {
+		else if (event.data.indexOf('old_goodTube_play|||') !== -1) {
 			goodTube_iframe_play(event.data.replace('goodTube_play|||', ''));
 		}
 
 		// Show the end screen thumbnails
-		else if (event.data === 'goodTube_endScreen_show') {
+		else if (event.data === 'old_goodTube_endScreen_show') {
 			if (document.body && document.body.classList.contains('goodTube_hideEndScreen')) {
 				document.body.classList.remove('goodTube_hideEndScreen');
 			}
 		}
 
 		// Hide the end screen thumbnails
-		else if (event.data === 'goodTube_endScreen_hide') {
+		else if (event.data === 'old_goodTube_endScreen_hide') {
 			if (document.body && !document.body.classList.contains('goodTube_hideEndScreen')) {
 				document.body.classList.add('goodTube_hideEndScreen');
 			}
 		}
 
 		// Keyboard shortcut
-		else if (event.data.indexOf('goodTube_shortcut_') !== -1) {
+		else if (event.data.indexOf('old_goodTube_shortcut_') !== -1) {
 			// Target the video element
 			let videoElement = document.querySelector('video');
 
 			// If the video element exists
 			if (videoElement) {
 				// Get the key event data
-				let keyData = event.data.replace('goodTube_shortcut_', '').split('_');
+				let keyData = event.data.replace('old_goodTube_shortcut_', '').split('_');
 
 				// Parse the data
 				let eventType = keyData[0];
@@ -5514,31 +5514,31 @@
 		}
 
 		// Go fullscreen
-		else if (event.data === 'goodTube_fullscreen') {
+		else if (event.data === 'old_goodTube_fullscreen') {
 			goodTube_iframe_fullscreen();
 		}
 
 		// Enable autoplay
-		else if (event.data === 'goodTube_autoplay_true') {
+		else if (event.data === 'old_goodTube_autoplay_true') {
 			goodTube_helper_setCookie('goodTube_autoplay', 'true');
 			goodTube_autoplay = 'true';
 			goodTube_iframe_setAutoplay('true');
 		}
 
 		// Disable autoplay
-		else if (event.data === 'goodTube_autoplay_false') {
+		else if (event.data === 'old_goodTube_autoplay_false') {
 			goodTube_helper_setCookie('goodTube_autoplay', 'false');
 			goodTube_autoplay = 'false';
 			goodTube_iframe_setAutoplay('false');
 		}
 
 		// Enable previous button
-		else if (event.data === 'goodTube_prevButton_true') {
+		else if (event.data === 'old_goodTube_prevButton_true') {
 			goodTube_iframe_enablePrevButton();
 		}
 
 		// Disable previous button
-		else if (event.data === 'goodTube_prevButton_false') {
+		else if (event.data === 'old_goodTube_prevButton_false') {
 			goodTube_iframe_disablePrevButton();
 		}
 	}
@@ -5652,7 +5652,7 @@
 		}
 
 		// Tell the top level window to cancel any pending play actions
-		window.top.postMessage('goodTube_cancelPlay', '*');
+		window.top.postMessage('old_goodTube_cancelPlay', '*');
 	}
 
 	// Mute
@@ -5804,7 +5804,7 @@
 			}
 
 			// Tell the top level window to sync the video
-			window.top.postMessage('goodTube_syncMainPlayer_' + syncTime + '|||' + videoData.video_id, '*');
+			window.top.postMessage('old_goodTube_syncMainPlayer_' + syncTime + '|||' + videoData.video_id, '*');
 		}
 	}
 
@@ -5825,7 +5825,7 @@
 			goodTube_pip = false;
 
 			// Set the picture in picture state in the top window
-			window.top.postMessage('goodTube_pip_false', '*');
+			window.top.postMessage('old_goodTube_pip_false', '*');
 		});
 
 		// If we enter the picture in picture
@@ -5838,7 +5838,7 @@
 			goodTube_pip = true;
 
 			// Set the picture in picture state in the top window
-			window.top.postMessage('goodTube_pip_true', '*');
+			window.top.postMessage('old_goodTube_pip_true', '*');
 		});
 	}
 
@@ -5853,13 +5853,13 @@
 			// Next video
 			navigator.mediaSession.setActionHandler("nexttrack", () => {
 				// Tell the top frame to go to the next video
-				window.top.postMessage('goodTube_nextVideo', '*');
+				window.top.postMessage('old_goodTube_nextVideo', '*');
 			});
 
 			// Previous video
 			navigator.mediaSession.setActionHandler("previoustrack", () => {
 				// Tell the top frame to go to the previous video
-				window.top.postMessage('goodTube_prevVideo', '*');
+				window.top.postMessage('old_goodTube_prevVideo', '*');
 			});
 		}
 	}
@@ -5895,7 +5895,7 @@
 			// Make sure we found a valid aspect ratio
 			if (aspectRatio.length === 2 && !isNaN(aspectRatio[0]) && !isNaN(aspectRatio[1])) {
 				// Tell the top level window to sync the aspect ratio
-				window.top.postMessage('goodTube_syncAspectRatio_' + aspectRatio[0] + '_' + aspectRatio[1], '*');
+				window.top.postMessage('old_goodTube_syncAspectRatio_' + aspectRatio[0] + '_' + aspectRatio[1], '*');
 			}
 		}
 	}
@@ -5971,7 +5971,7 @@
 		goodTube_proxyIframe_addYoutubeIframe();
 
 		// Let the parent frame know it's loaded
-		window.top.postMessage('goodTube_proxyIframe_loaded', '*');
+		window.top.postMessage('old_goodTube_proxyIframe_loaded', '*');
 	}
 
 	// Style the proxy iframe
@@ -6059,18 +6059,18 @@
 		// Make sure we found the youtube iframe
 		if (youtubeIframe) {
 			// Change the source of the youtube iframe
-			if (event.data.indexOf('goodTube_src_') !== -1) {
+			if (event.data.indexOf('old_goodTube_src_') !== -1) {
 				// // First time just change the src
 				// if (youtubeIframe.src === '' || youtubeIframe.src.indexOf('?goodTubeProxy=1') !== -1) {
-				// 	youtubeIframe.src = event.data.replace('goodTube_src_', '');
+				// 	youtubeIframe.src = event.data.replace('old_goodTube_src_', '');
 				// }
 				// // All other times, we need to use this weird method so it doesn't mess with our browser history
 				// else {
-				// 	youtubeIframe.contentWindow.location.replace(event.data.replace('goodTube_src_', ''));
+				// 	youtubeIframe.contentWindow.location.replace(event.data.replace('old_goodTube_src_', ''));
 				// }
 
 				// We need to use this method so it doesn't mess with the browser history
-				youtubeIframe.contentWindow.location.replace(event.data.replace('goodTube_src_', ''));
+				youtubeIframe.contentWindow.location.replace(event.data.replace('old_goodTube_src_', ''));
 			}
 			// Pass all other messages down to the youtube iframe
 			else {
