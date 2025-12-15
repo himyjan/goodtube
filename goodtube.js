@@ -429,8 +429,6 @@
 			let oldVersionElements = document.querySelectorAll('[data-version="old"]');
 			oldVersionElements.forEach(element => {
 				element.remove();
-
-				console.log('removing', element);
 			});
 		}
 	}
@@ -820,10 +818,10 @@
 			return;
 		}
 
-		// If we've already turned off autoplay, just return
-		if (goodTube_turnedOffAutoplay) {
-			return;
-		}
+		// // If we've already turned off autoplay, just return
+		// if (goodTube_turnedOffAutoplay) {
+		// 	return;
+		// }
 
 		// Target the autoplay button
 		let autoplayButton = document.querySelector('#movie_player .ytp-autonav-toggle-button');
@@ -1834,23 +1832,8 @@
 			return;
 		}
 
-		// Firefox
-		if (navigator.userAgent.toLowerCase().indexOf('firefox') !== -1) {
-			if (goodTube_tabInFocus) {
-				goodTube_helper_shortcut('next');
-			}
-			else {
-				goodTube_page_api = document.getElementById('movie_player');
-				if (goodTube_page_api && typeof goodTube_page_api.nextVideo === 'function') {
-					goodTube_page_api.nextVideo();
-				}
-			}
-		}
-		// Chrome
-		else {
-			// Go to the next video using the keyboard shortcut (evades detection)
-			goodTube_helper_shortcut('next');
-		}
+		// Go to the next video using the keyboard shortcut (evades detection)
+		goodTube_helper_shortcut('next');
 
 		// Debug message
 		console.log('[GoodTube] Playing next video...');
@@ -2206,18 +2189,33 @@
 		// Sync main player (only if we're viewing a video page AND the "hide and mute ads" fallback is inactive)
 		else if (event.data.indexOf('goodTube_syncMainPlayer_') !== -1 && goodTube_helper_watchingVideo() && !goodTube_fallback) {
 			// Parse the data
-			let syncTime = parseFloat(event.data.replace('goodTube_syncMainPlayer_', ''));
-
-			// Target the youtube video element
-			let youtubeVideoElement = document.querySelector('#movie_player video');
+			let bits = event.data.replace('goodTube_syncMainPlayer_', '').split('|||');
+			let syncTime = bits[0];
+			let videoId = bits[1];
 
 			// Re-fetch the page API
 			goodTube_page_api = document.getElementById('movie_player');
 
 			// Make sure the API is all good
-			if (!goodTube_page_api || typeof goodTube_page_api.seekTo !== 'function') {
+			if (!goodTube_page_api || typeof goodTube_page_api.seekTo !== 'function' || typeof goodTube_page_api.getVideoData !== 'function' || typeof goodTube_page_api.pauseVideo !== 'function' || typeof goodTube_page_api.playVideo !== 'function') {
 				return;
 			}
+
+			// Get the video data
+			let videoData = goodTube_page_api.getVideoData();
+
+			// Make sure the video data was ok and the IDs match
+			if (!videoData) {
+				return;
+			}
+
+			// Make sure the video id matches what was passed in
+			if (videoData.video_id !== videoId) {
+				return;
+			}
+
+			// Target the youtube video element
+			let youtubeVideoElement = document.querySelector('#movie_player video');
 
 			// If we found the video element
 			// AND we've not already synced to this point (this stops it continuing to sync when ended for no reason, we also need to round it down as it seems to be unreliable)
@@ -2226,11 +2224,16 @@
 				// Set a variable to indicate we're syncing the player (this stops the automatic pausing of all videos)
 				goodTube_syncingPlayer = true;
 
+				let syncWithOffset = (Math.floor(parseFloat(syncTime)) - 2);
+				if (syncWithOffset > (youtubeVideoElement.duration - 2)) {
+					syncWithOffset = (youtubeVideoElement.duration - 2);
+				}
+
+				// Sync the current time using the page API - 2 seconds (this is the only reliable way)
+				goodTube_page_api.seekTo(syncWithOffset);
+
 				// Play the video via the page API (this is the only reliable way)
 				goodTube_page_api.playVideo();
-
-				// Sync the current time using the page API - 500ms (this is the only reliable way)
-				goodTube_page_api.seekTo((syncTime - .5));
 
 				// Then mute the video via the page API (this helps to prevent audio flashes)
 				goodTube_page_api.mute();
@@ -2240,13 +2243,11 @@
 				youtubeVideoElement.volume = 0;
 				youtubeVideoElement.muted = true;
 
-				// Clear timeout first to solve memory leak issues
-				clearTimeout(goodTube_receiveMessage_timeout);
-
-				// After 1000ms stop syncing (and let the pause actions handle the pausing)
-				goodTube_receiveMessage_timeout = setTimeout(() => {
+				// After 500ms stop syncing
+				setTimeout(() => {
+					goodTube_page_api.pauseVideo();
 					goodTube_syncingPlayer = false;
-				}, 1000);
+				}, 500);
 			}
 		}
 
@@ -2551,7 +2552,9 @@
 								</div>
 								<div class='goodTube_modal_answer'>
 									<div class='goodTube_modal_answerInner'>
-										Please change over to using the official extension before support ends. Don't forget to remove this old version once you've swapped over.
+										Please change over to using the official extension before support ends. Don't forget to remove this old version once you've swapped over.<br>
+										<br>
+										Please note that this existing free version is not being removed. You are welcome to continue to use it for as long as you like. Just remember that it is no longer being supported or updated.
 									</div>
 								</div>
 							</div>
@@ -2589,7 +2592,7 @@
 											<li>Automatically set video quality to highest / lowest / whatever you want</li>
 											<li>Always start in theater mode</li>
 											<li>Remove all AI related stuff</li>
-											<li>Support for transcripts</li>
+											<li>Support for transcripts and the chapters menu (next to the video)</li>
 											<li>Fixed shuffle and loop functionality for playlists</li>
 											<li>And more over time</li>
 										</ul>
@@ -2606,7 +2609,7 @@
 									<div class='goodTube_modal_answerInner'>
 										The extension gives you a 7 day free trial. After that it costs $2, once only, for unlimited life time access on as many devices as you like.<br>
 										<br>
-										Please note that this existing free version is NOT being removed. You are welcome to continue to use it for as long as you like. Just remember that it is no longer being supported or updated.<br>
+										Please note that this existing free version is not being removed. You are welcome to continue to use it for as long as you like. Just remember that it is no longer being supported or updated.<br>
 										<br>
 										The decision to make this a paid extension has not come easily and I've tried to make it as cheap as possible. The priority remains keeping this adblocker available to <i>everyone</i>.<br>
 										<br>
@@ -2622,11 +2625,15 @@
 							</div>
 						</div>
 
+						<div class='goodTube_text' style='color: #2d7bd4;'>
+							<strong>IMPORTANT: Don't forget to remove this old version once you have updated (or it won't work properly)!</strong>
+						</div>
+
 						<div class='goodTube_buttons'>
-						<a href='https://chromewebstore.google.com/detail/goodtube-adblock-for-yout/mnlobacbpcnaibnhmfcpdfllcipgnfhe' class='goodTube_button' target='_blank'>Download from the Chrome Web Store (for most browsers)</a><br>
-						<br>
-						<a href='https://addons.mozilla.org/en-US/firefox/addon/goodtube-adblock-for-youtube/' class='goodTube_button' target='_blank'>Download for Firefox</a>
-					</div>
+							<a href='https://chromewebstore.google.com/detail/goodtube-adblock-for-yout/mnlobacbpcnaibnhmfcpdfllcipgnfhe' class='goodTube_button' target='_blank'>Download from the Chrome Web Store (for most browsers)</a><br>
+							<br>
+							<a href='https://addons.mozilla.org/en-US/firefox/addon/goodtube-adblock-for-youtube/' class='goodTube_button' target='_blank'>Download for Firefox</a>
+						</div>
 					</div> <!-- .goodTube_content -->
 
 
@@ -4742,8 +4749,6 @@
 			// Sync the main player, this ensures videos register as finished with the little red play bars
 			goodTube_iframe_syncMainPlayer(true);
 
-			console.log('video ended - calling next from iframe');
-
 			// Tell the top frame the video ended
 			window.top.postMessage('goodTube_videoEnded', '*');
 		}
@@ -5771,6 +5776,20 @@
 			return;
 		}
 
+		// Re-fetch the iframe api
+		goodTube_iframe_api = document.getElementById('movie_player');
+
+		// Get the video data
+		let videoData = false;
+		if (goodTube_iframe_api && typeof goodTube_iframe_api.getVideoData === 'function') {
+			videoData = goodTube_iframe_api.getVideoData();
+		}
+
+		// Make sure we found the video data
+		if (!videoData) {
+			return;
+		}
+
 		// Target the video element
 		let videoElement = document.querySelector('video');
 
@@ -5785,7 +5804,7 @@
 			}
 
 			// Tell the top level window to sync the video
-			window.top.postMessage('goodTube_syncMainPlayer_' + syncTime, '*');
+			window.top.postMessage('goodTube_syncMainPlayer_' + syncTime + '|||' + videoData.video_id, '*');
 		}
 	}
 
