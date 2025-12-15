@@ -96,6 +96,7 @@
 	// Add a CSS class to show or hide elements
 	function goodTube_helper_showHide_init() {
 		let style = document.createElement('style');
+		style.setAttribute('data-version', 'old');
 		style.textContent = `
 			.goodTube_hidden {
 				display: none !important;
@@ -258,9 +259,6 @@
 	// A reference to our player's wrapper
 	let goodTube_playerWrapper = false;
 
-	// A reference to the youtube iframe
-	let goodTube_youtubeIframe = false;
-
 	// A reference to our player's iframe
 	let goodTube_player = false;
 
@@ -406,21 +404,10 @@
 	function goodTube_checkVersionConflict() {
 		if (!goodTube_versionConflict) {
 			const settingsElement = document.getElementById('goodTube_settings');
+			const modalElement = document.querySelector('.goodTube_modal[data-visible]');
 
-			if (settingsElement) {
+			if (settingsElement || modalElement) {
 				goodTube_versionConflict = true;
-
-				if (goodTube_playerWrapper) {
-					goodTube_playerWrapper.remove();
-				}
-
-				if (goodTube_player) {
-					goodTube_player.remove();
-				}
-
-				if (goodTube_youtubeIframe) {
-					goodTube_player.remove();
-				}
 
 				let menuButton = document.querySelector('.goodTube_menuButton');
 				if (menuButton) {
@@ -436,6 +423,15 @@
 					alert("Oops! Looks like you're using the old and new version of GoodTube at the same time! Please remove the old version (or things may not work properly).")
 				}
 			}
+		}
+
+		if (goodTube_versionConflict) {
+			let oldVersionElements = document.querySelectorAll('[data-version="old"]');
+			oldVersionElements.forEach(element => {
+				element.remove();
+
+				console.log('removing', element);
+			});
 		}
 	}
 
@@ -641,6 +637,7 @@
 
 		// Add the styles to the page
 		let style = document.createElement('style');
+		style.setAttribute('data-version', 'old');
 		style.textContent = cssOutput;
 		document.head.appendChild(style);
 	}
@@ -949,6 +946,7 @@
 
 		// Add CSS styles for the player
 		let style = document.createElement('style');
+		style.setAttribute('data-version', 'old');
 		style.textContent = `
 			/* Player wrapper */
 			#goodTube_playerWrapper {
@@ -982,6 +980,7 @@
 
 		// Setup player layout
 		let playerWrapper = document.createElement('div');
+		playerWrapper.setAttribute('data-version', 'old');
 		playerWrapper.id = 'goodTube_playerWrapper';
 		playerWrapper.classList.add('goodTube_hidden');
 
@@ -990,6 +989,7 @@
 
 		// Add video iframe embed (via proxy iframe)
 		let proxyIframe = document.createElement('iframe');
+		proxyIframe.setAttribute('data-version', 'old');
 		// proxyIframe.src = 'https://wikipedia.org/wiki/Bruce_Lee?goodTubeProxy=1';
 		proxyIframe.setAttribute('width', '100%');
 		proxyIframe.setAttribute('height', '100%');
@@ -2429,6 +2429,7 @@
 
 		// Create the menu container
 		let menuContainer = document.createElement('div');
+		menuContainer.setAttribute('data-version', 'old');
 
 		// Add the menu container to the page
 		document.body.appendChild(menuContainer);
@@ -2820,6 +2821,7 @@
 
 		// Style the menu
 		let style = document.createElement('style');
+		style.setAttribute('data-version', 'old');
 		style.textContent = `
 			/* Menu button
 			---------------------------------------------------------------------------------------------------- */
@@ -3638,6 +3640,7 @@
 
 		// Style the overlay
 		let style = document.createElement('style');
+		style.setAttribute('data-version', 'old');
 
 		let cssOutput = `
 			.ytp-skip-ad-button {
@@ -3880,6 +3883,7 @@
 		if (!existingOverlay) {
 			// Create a new overlay
 			let overlayElement = document.createElement('div');
+			overlayElement.setAttribute('data-version', 'old');
 			overlayElement.setAttribute('id', 'goodTube_hideMuteAdsOverlay');
 
 			// Populate the overlay
@@ -4394,6 +4398,7 @@
 		}
 
 		let style = document.createElement('style');
+		style.setAttribute('data-version', 'old');
 
 		let cssOutput = `
 			/* Hide unwanted stuff */
@@ -5249,6 +5254,7 @@
 		if (!goodTube_iframe_supportDoubleSpeed_doubleSpeedElement) {
 			// Create the element
 			goodTube_iframe_supportDoubleSpeed_doubleSpeedElement = document.createElement('div');
+			goodTube_iframe_supportDoubleSpeed_doubleSpeedElement.setAttribute('data-version', 'old');
 
 			// Add the classes
 			goodTube_iframe_supportDoubleSpeed_doubleSpeedElement.classList.add('goodTube_doubleSpeed');
@@ -5958,9 +5964,10 @@
 
 		// Hide the DOM elements from the proxy page
 		let style = document.createElement('style');
+		style.setAttribute('data-version', 'old');
 		style.textContent = `
 			/* Hide the page */
-			body *:not(#goodTube_youtube_iframe) {
+			body *:not(#goodTube_youtube_iframe_old) {
 				display: none !important;
 				opacity: 0 !important;
 				visibility: hidden !important;
@@ -5972,7 +5979,7 @@
 			}
 
 			/* Style the Youtube iframe */
-			#goodTube_youtube_iframe {
+			#goodTube_youtube_iframe_old {
 				position: fixed;
 				top: 0;
 				bottom: 0;
@@ -5991,16 +5998,18 @@
 			return;
 		}
 
-		goodTube_youtubeIframe = document.createElement('iframe');
-		goodTube_youtubeIframe.setAttribute('width', '100%');
-		goodTube_youtubeIframe.setAttribute('height', '100%');
-		goodTube_youtubeIframe.setAttribute('frameborder', '0');
-		goodTube_youtubeIframe.setAttribute('scrolling', 'yes');
-		goodTube_youtubeIframe.setAttribute('allow', 'accelerometer *; autoplay *; clipboard-write *; encrypted-media *; gyroscope *; picture-in-picture *; web-share *;');
-		goodTube_youtubeIframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-		goodTube_youtubeIframe.setAttribute('allowfullscreen', true);
-		goodTube_youtubeIframe.setAttribute('id', 'goodTube_youtube_iframe');
-		document.body.appendChild(goodTube_youtubeIframe);
+		let youtubeIframe = document.createElement('iframe');
+		youtubeIframe.setAttribute('data-version', 'old');
+		youtubeIframe.setAttribute('width', '100%');
+		youtubeIframe.setAttribute('height', '100%');
+		youtubeIframe.setAttribute('frameborder', '0');
+		youtubeIframe.setAttribute('scrolling', 'yes');
+		youtubeIframe.setAttribute('allow', 'accelerometer *; autoplay *; clipboard-write *; encrypted-media *; gyroscope *; picture-in-picture *; web-share *;');
+		youtubeIframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+		youtubeIframe.setAttribute('allowfullscreen', true);
+		youtubeIframe.setAttribute('id', 'goodTube_youtube_iframe_old');
+		youtubeIframe.setAttribute('data-version', 'old');
+		document.body.appendChild(youtubeIframe);
 	}
 
 	// Receive a message from the parent window
@@ -6026,7 +6035,7 @@
 		}
 
 		// Target the youtube iframe
-		let youtubeIframe = document.getElementById('goodTube_youtube_iframe');
+		let youtubeIframe = document.getElementById('goodTube_youtube_iframe_old');
 
 		// Make sure we found the youtube iframe
 		if (youtubeIframe) {
